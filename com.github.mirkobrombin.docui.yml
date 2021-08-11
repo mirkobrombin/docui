@@ -15,15 +15,6 @@ finish-args:
   - '--env=LC_CTYPE=en_US.UTF-8'
     
 modules:
-  - name: python-certifi
-    buildsystem: simple
-    build-commands:
-      - python3 setup.py install --prefix=/app --root=/
-    sources:
-      - type: archive
-        url: 'https://github.com/certifi/python-certifi/archive/2021.05.30.tar.gz'
-        sha256: 9bffc4826ac0308591e26852a0404548a9e4e30b7214ebfd86360cd214f51dda
-
   - name: docui
     builddir: true
     buildsystem: simple
@@ -34,9 +25,9 @@ modules:
       - |
         . /usr/lib/sdk/golang/enable.sh
         export GOPATH=$PWD/go
-        env GOFLAGS=-mod=vendor go run build.go -no-upgrade build
-      - install -Dm755 -t /app/bin docui
+        export GO111MODULE=on
+      - go install
     sources:
-      - type: git
-        url: 'https://github.com/skanehira/docui'
-        tag: 2.0.4
+      - type: archive
+        url: 'https://github.com/skanehira/docui/releases/download/2.0.4/docui_2.0.4_Linux_x86_64.tar.gz'
+        sha256: 8f87769b99e63f58fb77561fa9eb0f1913214aef3f1f9955e57df43bbfc3bbfa
