@@ -1,0 +1,42 @@
+id: com.github.mirkobrombin.docui
+runtime: org.freedesktop.Platform
+runtime-version: '20.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.golang
+command: docui
+
+finish-args:
+  - '--filesystem=host'
+  - '--allow=multiarch'
+  - '--share=network'
+  - '--share=ipc'
+  - '--env=TERM=xterm-256color'
+  - '--env=LC_CTYPE=en_US.UTF-8'
+    
+modules:
+  - name: python-certifi
+    buildsystem: simple
+    build-commands:
+      - python3 setup.py install --prefix=/app --root=/
+    sources:
+      - type: archive
+        url: 'https://github.com/certifi/python-certifi/archive/2021.05.30.tar.gz'
+        sha256: 9bffc4826ac0308591e26852a0404548a9e4e30b7214ebfd86360cd214f51dda
+
+  - name: docui
+    builddir: true
+    buildsystem: simple
+    build-options:
+      env:
+        GOBIN: /app/bin
+    build-commands:
+      - |
+        . /usr/lib/sdk/golang/enable.sh
+        export GOPATH=$PWD/go
+        env GOFLAGS=-mod=vendor go run build.go -no-upgrade build
+      - install -Dm755 -t /app/bin docui
+    sources:
+      - type: git
+        url: 'https://github.com/skanehira/docui'
+        tag: 2.0.4
