@@ -18,8 +18,7 @@ modules:
   - name: docui
     buildsystem: simple
     build-commands:
-      - "ls"
-      - "install -Dm 755 docui ${FLATPAK_DEST}/bin/docui"
+      - install -Dm755 -t /app/bin docui
     sources:
       - type: archive
         url: 'https://github.com/skanehira/docui/releases/download/2.0.4/docui_2.0.4_Linux_x86_64.tar.gz'
