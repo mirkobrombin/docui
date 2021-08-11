@@ -16,11 +16,9 @@ finish-args:
     
 modules:
   - name: docui
-    builddir: true
     buildsystem: simple
-    build-options:
-      append-path: /usr/lib/sdk/golang/bin
-    build-commands: go install
+    build-commands:
+      - "install -Dm 755 docui ${FLATPAK_DEST}/bin/docui"
     sources:
       - type: archive
         url: 'https://github.com/skanehira/docui/releases/download/2.0.4/docui_2.0.4_Linux_x86_64.tar.gz'
